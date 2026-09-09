@@ -1,19 +1,32 @@
 pipeline {
   agent any
   environment {
-    APP_NAME = 'demo'
-    BUILD_MODE = 'production' // Now globally accessible
+    APP_ENV = 'test'
   }
   stages {
+    stage ('Checkout') {
+      steps {
+        checkout scm
+      }
+    }
     stage ('Build') {
       steps {
-        echo "Building the application..."
+        sh 'echo Building' 
       }
     }
     stage ('Test') {
       steps {
-        sh 'echo $APP_NAME $BUILD_MODE'
+        sh 'echo Running tests' 
       }
+    }
+  }
+
+  post {
+    success {
+      echo 'All stages passed'
+    }
+    failure {
+      echo 'Something failed'
     }
   }
 }
